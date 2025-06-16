@@ -1,12 +1,12 @@
-@library('jenkins-shared-library') _
+@Library('jenkins-shared-library') _
 pipeline{
     agent any
     tools {
         gradle 'Gradle'
     }
     environment{
-        URL = 'https://github.com/ananthvamsi555/Gradle_application.git'
-        BRANCH = 'main'
+        repoUrl = 'https://github.com/ananthvamsi555/Gradle_application.git'
+        branch = 'main'
     }
     stages {
         stage("Check gradle version"){
