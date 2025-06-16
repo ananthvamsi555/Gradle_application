@@ -1,10 +1,10 @@
 pipeline{
     agent any
-    tool{
+    tools {
         gradle 'Gradle'
     }
-    stages{
-        stages("Check gradle version"){
+    stages {
+        stage("Check gradle version"){
             steps{
                 script{
                     bat "\"${Gradle}\\bin\\gradle.bat\" --version"
