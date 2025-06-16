@@ -7,7 +7,8 @@ pipeline{
         stage("Check gradle version"){
             steps{
                 script{
-                    bat "\"${Gradle}\\bin\\gradle.bat\" --version"
+                    def gradleHome = tool name: 'Gradle', type: 'hudson.plugins.gradle.GradleInstallation'
+                    bat "\"${gradleHome}\\bin\\gradle.bat\" --version"
                 }
 
             }
