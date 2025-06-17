@@ -20,7 +20,7 @@ pipeline{
         }
         stage("Checkout"){
             steps{
-                scmCheckout(REPO_URL,BRANCH_NAME)
+                scmCheckout(repoUrl,branch)
             }
         }
 
