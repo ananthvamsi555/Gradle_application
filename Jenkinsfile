@@ -7,6 +7,7 @@ pipeline{
     environment{
         repoUrl = 'https://github.com/ananthvamsi555/Gradle_application.git'
         branch = 'main'
+        NEXUS_USER = credentials('nexus-creds')
     }
     stages {
         stage("Check gradle version"){
@@ -21,6 +22,16 @@ pipeline{
         stage("Checkout"){
             steps{
                 scmCheckout(repoUrl,branch)
+            }
+        }
+        stage("Build"){
+            steps{
+                bat 'gradlew.bat clean build'
+            }
+        }
+        stage('Publish to Nexus') {
+            steps {
+                bat "gradlew.bat publish -PnexusUser=%NEXUS_CRED_USR% -PnexusPassword=%NEXUS_CRED_PSW%"
             }
         }
 
