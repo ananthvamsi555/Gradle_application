@@ -31,7 +31,7 @@ pipeline{
         }
         stage('Publish to Nexus') {
             steps {
-                bat "gradlew.bat publish -PnexusUser=%NEXUS_CRED_USR% -PnexusPassword=%NEXUS_CRED_PSW%"
+                bat "gradlew.bat publish -PnexusUser=admin -PnexusPassword=User@123"
             }
         }
 
