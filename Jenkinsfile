@@ -7,7 +7,6 @@ pipeline{
     environment{
         repoUrl = 'https://github.com/ananthvamsi555/Gradle_application.git'
         branch = 'main'
-        NEXUS_USER = credentials('nexus-creds')
     }
     stages {
         stage("Check gradle version"){
@@ -30,8 +29,12 @@ pipeline{
             }
         }
         stage('Publish to Nexus') {
+            environment {
+                // Inject Nexus credentials only in this stage
+                NEXUS = credentials('nexus-creds')
+            }
             steps {
-                bat "gradlew.bat publish -PnexusUser=admin -PnexusPassword=User@123"
+                bat 'gradlew.bat publish -PnexusUser=%NEXUS_USR% -PnexusPassword=%NEXUS_PSW%'
             }
         }
 
