@@ -34,7 +34,8 @@ pipeline{
                 NEXUS = credentials('nexus-creds')
             }
             steps {
-                bat 'gradlew.bat publish -PnexusUser=%NEXUS_USR% -PnexusPassword=%NEXUS_PSW%'
+                def buildVersion = "1.0.${env.BUILD_NUMBER}"
+                bat 'gradlew.bat publish -PnexusUser=%NEXUS_USR% -PnexusPassword=%NEXUS_PSW% -PbuildVersion=${buildVersion}'
             }
         }
 
