@@ -30,6 +30,7 @@ publishing {
         maven {
             name = "nexus"
             url = uri("http://localhost:8082/repository/maven-releases/")
+            allowInsecureProtocol = true
             credentials {
                 username = project.findProperty("nexusUser") ?: ""
                 password = project.findProperty("nexusPassword") ?: ""
