@@ -43,6 +43,7 @@ pipeline {
                 script {
                     def buildVersion = "1.0.${env.BUILD_NUMBER}"
                     bat "gradlew.bat publish -PnexusUser=%NEXUS_USR% -PnexusPassword=%NEXUS_PSW% -PbuildVersion=${buildVersion}"
+                    echo "Build version ${buildVersion}"
                 }
             }
         }
