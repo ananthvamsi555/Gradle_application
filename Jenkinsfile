@@ -42,7 +42,7 @@ pipeline {
             }
             steps {
                 script {
-                    def jarPath = 'build\\libs\\Gradle_Application-1.0.0.jar'
+                    def jarPath = 'build\\libs\\Gradle_Application-2.0.jar'
                     nexusArtifactUploader(
                         nexusVersion: 'nexus3',
                         protocol: 'http',
