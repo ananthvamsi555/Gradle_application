@@ -42,7 +42,7 @@ pipeline {
             }
             steps {
                 script {
-                    def version = "1.0.${BUILD_NUMBER}"
+                    def version = "${BUILD_NUMBER}"
                     def jarName = "Gradle_Application-${version}.jar"
                     def jarPath = "build\\libs\\${jarName}"
                     echo "Uploading JAR: ${jarPath} with version: ${version}"
