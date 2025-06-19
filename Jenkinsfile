@@ -64,14 +64,5 @@ pipeline {
                 }
             }
         }
-
-        stage("Deploy to Windows with Ansible") {
-            steps {
-                bat """
-                    cd ansible
-                    ansible-playbook -i hosts deploy.yml --extra-vars build_number=%BUILD_NUMBER%
-                """
-            }
-        }
     }
 }
