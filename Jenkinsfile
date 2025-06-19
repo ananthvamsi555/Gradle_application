@@ -37,13 +37,26 @@ pipeline {
 
         stage("Publish to Nexus") {
             environment {
-                NEXUS = credentials('nexus-creds')
+                NEXUS_URL = "http://localhost:8082/repository/maven-releases/"
+                NEXUS_CREDENTIALS_ID = "nexus-creds" // Create this in Jenkins → Manage Credentials
             }
             steps {
                 script {
-                    def buildVersion = "1.0.${env.BUILD_NUMBER}"
-                    bat "gradlew.bat publish -PnexusUser=%NEXUS_USR% -PnexusPassword=%NEXUS_PSW% -PbuildVersion=${buildVersion}"
-                    echo "Build version ${buildVersion}"
+                    nexusArtifactUploader(
+                        nexusVersion: 'nexus3',
+                        protocol: 'http',
+                        nexusUrl: 'http://localhost:8082',
+                        groupId: 'TEST',
+                        version: '1.0.0',
+                        repository: 'maven-releases',
+                        credentialsId: "${NEXUS_CREDENTIALS_ID}",
+                        artifacts: [[
+                            artifactId: 'Gradle_Application', 
+                            classifier: '', 
+                            file: 'target/Gradle_Application.jar', 
+                            type: 'jar'
+                        ]]
+                    )
                 }
             }
         }
