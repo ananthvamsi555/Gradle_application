@@ -1,4 +1,4 @@
-
+package com.mycompany.app;
 public class Hello {
   
   public static String GREETING = "Hello world!";
