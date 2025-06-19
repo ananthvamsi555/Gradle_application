@@ -31,7 +31,7 @@ pipeline {
 
         stage("Build") {
             steps {
-                bat 'gradlew.bat clean build'
+                bat "gradlew.bat clean build -PbuildVersion=${BUILD_NUMBER}"
             }
         }
 
@@ -42,6 +42,10 @@ pipeline {
             }
             steps {
                 script {
+                    def version = "1.0.${BUILD_NUMBER}"
+                    def jarName = "Gradle_Application-${version}.jar"
+                    def jarPath = "build\\libs\\${jarName}"
+                    echo "Uploading JAR: ${jarPath} with version: ${version}"
                     nexusArtifactUploader(
                         nexusVersion: 'nexus3',
                         protocol: 'http',
@@ -53,7 +57,7 @@ pipeline {
                         artifacts: [[
                             artifactId: 'Gradle_Application', 
                             classifier: '', 
-                            file: 'build\\libs\\Gradle_Application-1.0.0.jar', 
+                            file: jarPath, 
                             type: 'jar'
                         ]]
                     )
