@@ -1,1 +1,26 @@
+- name: Deploy JAR from Nexus
+  hosts: app_servers
+  become: yes
 
+  vars:
+    build_number: "{{ build_number | default('1') }}"
+    nexus_url: "http://localhost:8082"
+    jar_name: "Gradle_Application-{{ build_number }}.jar"
+    jar_path: "C:\\Ansible-deployment"
+
+  tasks:
+    - name: Create app folder
+      file:
+        path: "{{ jar_path }}"
+        state: directory
+        mode: '0755'
+
+    - name: Download JAR from Nexus
+      get_url:
+        url: "{{ nexus_url }}/repository/maven-releases/TEST/Gradle_Application/1.0.{{ build_number }}/{{ jar_name }}"
+        dest: "{{ jar_path }}/{{ jar_name }}"
+
+    - name: Run app
+      shell: "nohup java -jar {{ jar_path }}/{{ jar_name }} > /tmp/app.log 2>&1 &"
+      args:
+        chdir: "{{ jar_path }}"
