@@ -31,14 +31,14 @@ pipeline {
 
         stage("Build") {
             steps {
-                bat "gradlew.bat clean build -PbuildVersion=${BUILD_NUMBER}"
+                bat "gradlew.bat clean build -PbuildVersion=%BUILD_NUMBER%"
             }
         }
 
         stage("Publish to Nexus") {
             environment {
                 NEXUS_URL = "http://localhost:8082/repository/maven-releases/"
-                NEXUS_CREDENTIALS_ID = "nexus-creds" // Create this in Jenkins → Manage Credentials
+                NEXUS_CREDENTIALS_ID = "nexus-creds"
             }
             steps {
                 script {
@@ -51,17 +51,26 @@ pipeline {
                         protocol: 'http',
                         nexusUrl: 'localhost:8082',
                         groupId: 'TEST',
-                        version: '1.0.0',
+                        version: "1.0.${version}",
                         repository: 'maven-releases',
                         credentialsId: "${NEXUS_CREDENTIALS_ID}",
                         artifacts: [[
-                            artifactId: 'Gradle_Application', 
-                            classifier: '', 
-                            file: jarPath, 
+                            artifactId: 'Gradle_Application',
+                            classifier: '',
+                            file: jarPath,
                             type: 'jar'
                         ]]
                     )
                 }
+            }
+        }
+
+        stage("Deploy to Windows with Ansible") {
+            steps {
+                bat """
+                    cd ansible
+                    ansible-playbook -i hosts deploy.yml --extra-vars build_number=%BUILD_NUMBER%
+                """
             }
         }
     }
