@@ -42,8 +42,6 @@ pipeline {
             }
             steps {
                 script {
-                    def jarName = bat(script: 'dir /b build\\libs\\Gradle_Application-*.jar', returnStdout: true).trim()
-                    def jarPath = "build\\libs\\${jarName}"
                     nexusArtifactUploader(
                         nexusVersion: 'nexus3',
                         protocol: 'http',
@@ -55,7 +53,7 @@ pipeline {
                         artifacts: [[
                             artifactId: 'Gradle_Application', 
                             classifier: '', 
-                            file: jarPath, 
+                            file: 'build\\libs\\Gradle_Application-1.0.0.jar', 
                             type: 'jar'
                         ]]
                     )
